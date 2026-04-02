@@ -5,6 +5,8 @@ public class Waypoint : MonoBehaviour
 {
     public List<Waypoint> neighbors = new List<Waypoint>();
 
+    public bool blocked;
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

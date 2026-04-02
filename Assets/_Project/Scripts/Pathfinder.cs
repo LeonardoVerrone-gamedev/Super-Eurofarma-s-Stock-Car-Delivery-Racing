@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class WaypointPathfinder
 {
-    public List<Waypoint> FindPath(Waypoint start, Waypoint target)
+    public List<Waypoint> FindPath(
+        Waypoint start,
+        Waypoint target,
+        HashSet<(Waypoint, Waypoint)> blockedEdges
+    )
     {
         var open = new List<Waypoint>();
         var closed = new HashSet<Waypoint>();
@@ -36,6 +40,10 @@ public class WaypointPathfinder
             foreach (var n in current.neighbors)
             {
                 if (n == null || closed.Contains(n))
+                    continue;
+
+                // 🔥 IGNORA ARESTAS BLOQUEADAS
+                if (blockedEdges.Contains((current, n)))
                     continue;
 
                 float newCost = gCost[current] + Vector2.Distance(

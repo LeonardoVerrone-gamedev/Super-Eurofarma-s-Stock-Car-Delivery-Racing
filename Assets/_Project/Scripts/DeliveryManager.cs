@@ -8,6 +8,8 @@ public class DeliveryManager : MonoBehaviour
     public DeliveryPoint pickupPoint; // ponto A
     public List<DeliveryPoint> deliveryPoints;
 
+    public GPSRenderer gps;
+
     public float reachDistance = 1.5f;
 
     DeliveryPoint currentTarget;
@@ -57,6 +59,8 @@ public class DeliveryManager : MonoBehaviour
         }
 
         OnNewTarget?.Invoke(currentTarget.transform.position);
+
+        gps.SetTarget(currentTarget.transform);
 
         Debug.Log("New target pos!");
     }
