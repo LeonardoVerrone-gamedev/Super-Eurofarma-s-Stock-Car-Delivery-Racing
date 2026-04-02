@@ -15,8 +15,6 @@ public class DeliveryManager : MonoBehaviour
 
     public System.Action<Vector3> OnNewTarget;
 
-    public PathRenderer pathRenderer;
-
     void Start()
     {
         SetNextTarget();
@@ -59,7 +57,6 @@ public class DeliveryManager : MonoBehaviour
         }
 
         OnNewTarget?.Invoke(currentTarget.transform.position);
-        pathRenderer.SetTarget(currentTarget.transform.position);
 
         Debug.Log("New target pos!");
     }
