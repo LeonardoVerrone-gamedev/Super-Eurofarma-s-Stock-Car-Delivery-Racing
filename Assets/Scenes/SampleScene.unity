@@ -5828,7 +5828,7 @@ MonoBehaviour:
   - {fileID: 1689946322}
   - {fileID: 2001997468}
   gps: {fileID: 554815724}
-  reachDistance: 1.5
+  reachDistance: 3
 --- !u!4 &554815723
 Transform:
   m_ObjectHideFlags: 0
