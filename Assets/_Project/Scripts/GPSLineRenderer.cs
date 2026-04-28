@@ -42,11 +42,8 @@ public class GPSRenderer : MonoBehaviour
 
     List<Waypoint> GetValidPath(Waypoint start, Waypoint end)
     {
-        List<Waypoint> bestComplete = null;
-        float bestCompleteDist = Mathf.Infinity;
-
-        List<Waypoint> bestPartial = null;
-        float bestPartialProgress = 0f;
+        List<Waypoint> bestPath = null;
+        float bestScore = Mathf.Infinity;
 
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
@@ -64,35 +61,25 @@ public class GPSRenderer : MonoBehaviour
                 continue;
             }
 
-            bool isComplete = progress >= 0.999f;
+            // score real
+            float distance = GetPathDistance(partial);
 
-            if (isComplete)
-            {
-                float dist = GetPathDistance(partial);
+            // penaliza caminhos incompletos
+            float penalty = (1f - progress) * 1000f;
 
-                if (dist < bestCompleteDist)
-                {
-                    bestCompleteDist = dist;
-                    bestComplete = partial;
-                }
-            }
-            else
+            float score = distance + penalty;
+
+            if (score < bestScore)
             {
-                // fallback: melhor progresso
-                if (progress > bestPartialProgress)
-                {
-                    bestPartialProgress = progress;
-                    bestPartial = partial;
-                }
+                bestScore = score;
+                bestPath = partial;
             }
 
+            // se achou caminho completo, ainda tenta melhorar nos próximos attempts
             BlockInvalidEdge(path);
         }
 
-        if (bestComplete != null)
-            return bestComplete;
-
-        return bestPartial;
+        return bestPath;
     }
 
     List<Waypoint> GetValidPartialPath(List<Waypoint> path, out float progress)

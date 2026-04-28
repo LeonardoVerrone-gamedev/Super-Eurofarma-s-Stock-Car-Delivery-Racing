@@ -5,17 +5,23 @@ public class DeliveryManager : MonoBehaviour
 {
     public Transform player;
 
-    public DeliveryPoint pickupPoint; // ponto A
+    public DeliveryPoint pickupPoint;
     public List<DeliveryPoint> deliveryPoints;
 
     public GPSRenderer gps;
 
     public float reachDistance = 1.5f;
 
+    [Header("Run Settings")]
+    public int maxDeliveries = 5;
+
+    private int completedDeliveries = 0;
+
     DeliveryPoint currentTarget;
     bool carryingPackage = false;
 
     public System.Action<Vector3> OnNewTarget;
+    public System.Action OnRunFinished;
 
     void Start()
     {
@@ -32,15 +38,27 @@ public class DeliveryManager : MonoBehaviour
         {
             if (!carryingPackage)
             {
-                // pegou pacote
+                // PEGOU PACOTE
                 carryingPackage = true;
-                Debug.Log("Recebe");
+                Debug.Log("📦 Pegou pacote");
             }
             else
             {
-                // entregou
+                // ENTREGOU
                 carryingPackage = false;
-                Debug.Log("Entrega");
+                completedDeliveries++;
+
+                Debug.Log($"✅ Entrega {completedDeliveries}/{maxDeliveries}");
+
+                // chama sistema de run
+                FindObjectOfType<DeliveryRunManager>()?.CompleteDelivery();
+
+                // terminou tudo?
+                if (completedDeliveries >= maxDeliveries)
+                {
+                    FinishRun();
+                    return;
+                }
             }
 
             SetNextTarget();
@@ -59,9 +77,15 @@ public class DeliveryManager : MonoBehaviour
         }
 
         OnNewTarget?.Invoke(currentTarget.transform.position);
-
         gps.SetTarget(currentTarget.transform);
+    }
 
-        Debug.Log("New target pos!");
+    void FinishRun()
+    {
+        Debug.Log("TODAS ENTREGAS COMPLETAS!");
+
+        currentTarget = null;
+
+        OnRunFinished?.Invoke();
     }
 }
