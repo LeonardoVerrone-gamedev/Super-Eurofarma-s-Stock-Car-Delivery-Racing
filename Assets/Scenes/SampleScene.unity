@@ -441,7 +441,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -4069868000543503413, guid: 117c4db9806da3e4183aa24495e68fae, type: 3}
+  m_Sprite: {fileID: 7954037389971019568, guid: aad650e62dba5ba4d874912736a03cb4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5829,6 +5829,7 @@ MonoBehaviour:
   - {fileID: 2001997468}
   gps: {fileID: 554815724}
   reachDistance: 3
+  maxDeliveries: 5
 --- !u!4 &554815723
 Transform:
   m_ObjectHideFlags: 0
